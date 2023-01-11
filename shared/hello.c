@@ -7,20 +7,18 @@
 #include <linux/buffer_head.h>
 #include <linux/init.h>
 #include <linux/timer.h>
-#define INTERVAL HZ/2
 
 #define DRIVER_AUTHOR "Ovazza - Kossyfidis"
 #define DRIVER_DESC "Hello world Module"
 #define DRIVER_LICENSE "GPL"
 
+static char* pattern = "00000001";
 static struct timer_list timer;
 static unsigned long basePattern;
 static unsigned long interval;
 
 int freq = 1;
-MODULE_PARM(freq, "i");  
-
-
+MODULE_PARM(freq, "i");
 
 struct file_operations chenille_proc_fops
 {
@@ -29,6 +27,26 @@ struct file_operations chenille_proc_fops
     .write = write_func,
 }
 
+ssize_t read_func(struct file* file, char __user* buffer, size_t count, loff_t* ppos) {
+    int copy;
+    if (count > 8) count = 8;
+    if (copy = copy_to_user(buffer, message, count)) return -EFAULT;
+    return count-copy;
+}
+
+ssize_t fops_write(struct file * file, const char __user * buffer,
+size_t count, loff_t * ppos)
+{
+    int len = count;
+    if (len > TAILLE) len = TAILLE;
+    
+    if (copy_from_user(message, buffer, count)) return -EFAULT;
+    message[count] = '\0';
+    
+    memcpy(pattern, buffer, 8);
+
+    return count;
+}
 
 static void mytimer(unsigned long data)
 {
@@ -42,7 +60,7 @@ static void mytimer(unsigned long data)
     {
         pattern = basePattern;
     }
-    mod_timer(&timer, jiffies + INTERVAL);
+    mod_timer(&timer, jiffies + interval);
 }
 
 int hello_init(void)
@@ -62,10 +80,10 @@ int hello_init(void)
     init_timer(&timer);
     timer.function=mytimer;
     timer.data=0;
-    mod_timer(&timer, jiffies + INTERVAL);
+    mod_timer(&timer, jiffies + interval);
 	return 0;
 }
-
+    
 void hello_exit(void)
 {
     del_timer(&timer);
