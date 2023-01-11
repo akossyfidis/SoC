@@ -1,7 +1,6 @@
 #include <linux/module.h>
 #include <linux/kernel.h>
 #include <linux/fs.h>
-#include <linux/malloc.h>
 #include <asm/segment.h>
 #include <asm/uaccess.h>
 #include <linux/buffer_head.h>
@@ -43,7 +42,7 @@ size_t count, loff_t * ppos)
     if (copy_from_user(message, buffer, count)) return -EFAULT;
     message[count] = '\0';
     
-    memcpy(pattern, buffer, 8);
+    memcpy(basePattern, buffer, 8);
 
     return count;
 }
@@ -71,11 +70,6 @@ int hello_init(void)
 
 	printk(KERN_INFO "Hello world!\n");
     interval = HZ / freq;
-
-    for (size_t i = 0; i < 8; i++)
-    {
-        basePattern |= (data[i] - '0') << (28 - 4 * i);
-    }
 
     init_timer(&timer);
     timer.function=mytimer;
