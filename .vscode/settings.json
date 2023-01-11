@@ -4,6 +4,8 @@
         "unistd.h": "c",
         "stdio.h": "c",
         "stdlib.h": "c",
-        "fcntl.h": "c"
+        "fcntl.h": "c",
+        "types.h": "c",
+        "mman.h": "c"
     }
 }
