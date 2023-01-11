@@ -1,0 +1,1 @@
+make CROSS_COMPILE=/usr/bin/arm-linux-gnueabihf- ARCH=arm
