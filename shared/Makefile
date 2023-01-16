@@ -1,4 +1,4 @@
-obj-m:=hello.o
+obj-m:=gpio_leds_v1.o
 #KERNEL_SOURCE=/lib/modules/$(shell uname -r)/build
 KERNEL_SOURCE=/home/ensea/linux-socfpga
 #CROSS_COMPILE=/usr/bin/arm-linux-gnueabihf-

@@ -19,3 +19,6 @@ __used
 __attribute__((section(".modinfo"))) =
 "depends=";
 
+MODULE_ALIAS("of:N*T*Cdev,ensea");
+
+MODULE_INFO(srcversion, "8F3ABECBFAB7D8145BEB7CA");

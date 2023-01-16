@@ -1,0 +1,1 @@
+cmd_/home/ensea/src/gpio_leds_v1.ko := /usr/bin/arm-linux-gnueabihf-ld -EL -r  -T ./scripts/module-common.lds --build-id  -o /home/ensea/src/gpio_leds_v1.ko /home/ensea/src/gpio_leds_v1.o /home/ensea/src/gpio_leds_v1.mod.o
